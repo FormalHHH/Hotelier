@@ -4,6 +4,9 @@ import co.jp.worksap.intern.global.*;
 import co.jp.worksap.intern.main.Main;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -64,15 +67,15 @@ public class UI extends JFrame implements Runnable {
 		});
 	}
 
-	private void initStaffPanel(Table atm) {
+	private void initStaffPanel() {
 		staffPanel = new JPanel();
-		initStaffScroll(atm);
+		initStaffScroll();
 		staffPanel.add(staffScroll);
 	}
 
-	private void initStaffScroll(Table atm) {
+	private void initStaffScroll() {
 		staffScroll = new JScrollPane();
-		initStaffTable(atm);
+		initStaffTable();
 		staffScroll.setViewportView(staffTable);
 	}
 
@@ -88,9 +91,22 @@ public class UI extends JFrame implements Runnable {
 		});
 	}
 
-	private void initStaffTable(Table atm) {
-		staffTable = new JTable(atm);
-		//TODO:
+	private void initStaffTable() {
+		UI.this.t.addTableModelListener(new TableModelListener(){
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				if (e.getType() == TableModelEvent.UPDATE) {
+					for (int i = 0; i < t.getRowCount(); ++i) {
+					//for (int i = e.getFirstRow(); i <= e.getLastRow(); ++i) {
+						UI.this.t.setValueAt(
+								Integer.parseInt(UI.this.t.getValueAt(i, 6)) * (100 - Math.max(Integer.parseInt(UI.this.t.getValueAt(i, 7)) - Settings.permittedVacationPerMonth, 0) * Settings.finePercentForAbsentDays) / 100,
+								i, 8, false);
+					}
+				}
+				UI.this.staffScroll.updateUI();
+			}
+		});
+		staffTable = new JTable(UI.this.t);
 	}
 
 	private void initSettingsPanel() {
@@ -206,7 +222,7 @@ public class UI extends JFrame implements Runnable {
 						} catch (NullPointerException e) {
 							System.err.println("MAIN------UI  : first time to show the table");
 						}
-						initStaffPanel(t);
+						initStaffPanel();
 						smPanel.add(staffPanel);
 						this.validate();
 						this.repaint();

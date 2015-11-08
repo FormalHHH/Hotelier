@@ -28,8 +28,15 @@ public class SettingsWindow extends JFrame {
 			mainPanel.add(queuePanel,BorderLayout.CENTER);
 			break;
 		case STAFF:
+			JPanel centerPanel = new JPanel();
+			mainPanel.add(centerPanel,BorderLayout.CENTER);
 			initFilePanel("Staff info");
-			mainPanel.add(filePanel,BorderLayout.CENTER);
+			//mainPanel.add(filePanel,BorderLayout.CENTER);
+			centerPanel.add(filePanel);
+			initVacationPanel();
+			centerPanel.add(vacationPanel);
+			initFinePanel();
+			centerPanel.add(finePanel);
 			break;
 		default:
 			Main.fault();
@@ -38,6 +45,43 @@ public class SettingsWindow extends JFrame {
 		mainPanel.add(buttonPanel,BorderLayout.SOUTH);
 	}
 	
+	private void initVacationPanel() {
+		vacationPanel = new JPanel(new FlowLayout());
+		initVacationLabel();
+		vacationPanel.add(vacationLabel);
+		initVacationTextField();
+		vacationPanel.add(vacationTextField);
+	}
+
+	private void initVacationTextField() {
+		vacationTextField = new JTextField(10);
+		vacationTextField.setHorizontalAlignment(JTextField.RIGHT);
+		vacationTextField.setText(new Integer(Settings.permittedVacationPerMonth).toString());
+	}
+
+	private void initVacationLabel() {
+		vacationLabel = new JLabel("Permitted Vacations Per Month:");
+	}
+
+	private void initFinePanel() {
+		finePanel = new JPanel(new FlowLayout());
+		initFineLabel();
+		finePanel.add(fineLabel);
+		initFineTextField();
+		finePanel.add(fineTextField);
+		finePanel.add(new JLabel("%"));
+	}
+
+	private void initFineTextField() {
+		fineTextField = new JTextField(10);
+		fineTextField.setHorizontalAlignment(JTextField.RIGHT);
+		fineTextField.setText(new Integer(Settings.finePercentForAbsentDays).toString());
+	}
+
+	private void initFineLabel() {
+		fineLabel = new JLabel("Fine Percent For Absent Days:");
+	}
+
 	private void initFilePanel(String string) {
 		filePanel = new JPanel(new FlowLayout());
 		filePanel.add(new JLabel(string));
@@ -66,7 +110,7 @@ public class SettingsWindow extends JFrame {
 	}
 
 	private void initFileTextField() {
-		fileTextField = new JTextField(50);
+		fileTextField = new JTextField(40);
 		fileTextField.setEditable(false);
 		fileTextField.setText(Settings.staffFile[0] + Settings.staffFile[1]);
 		fileTextField.setHorizontalAlignment(JTextField.RIGHT);
@@ -149,9 +193,10 @@ public class SettingsWindow extends JFrame {
 			Settings.blockingQueueLength = Integer.parseInt(queueTextField.getText());
 			break;
 		case STAFF:
-			//TODO: accept staff csv file
 			Settings.staffFile[0] = loadFile.getDirectory();
 			Settings.staffFile[1] = loadFile.getFile();
+			Settings.finePercentForAbsentDays = Integer.parseInt(fineTextField.getText());
+			Settings.permittedVacationPerMonth = Integer.parseInt(vacationTextField.getText());
 			break;
 		default:
 			Main.fault();
@@ -166,6 +211,14 @@ public class SettingsWindow extends JFrame {
 	private JLabel describeLabel;
 	private JButton browseButton;
 	private JPanel filePanel;
+	
+	private JTextField vacationTextField;
+	private JLabel vacationLabel;
+	private JPanel vacationPanel;
+	
+	private JTextField fineTextField;
+	private JLabel fineLabel;
+	private JPanel finePanel;
 	
 	private JButton okButton;
 	private JButton cancelButton;;

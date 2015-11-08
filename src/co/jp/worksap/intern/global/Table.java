@@ -120,7 +120,21 @@ public class Table extends AbstractTableModel {
 	
 	@Override
 	public void setValueAt(Object aValue, int row, int column) {
-		content.get(row).set(column, (String) aValue);
+		//if (aValue instanceof Integer) {
+			content.get(row).set(column, aValue.toString());
+		/*} else if (aValue instanceof String) {{
+			content.get(row).set(column, aValue);
+		}*/
+		fireTableCellUpdated(row, column);
+	}
+	
+	public void setValueAt(Object aValue, int row, int column, boolean annouance) {
+		//if (aValue instanceof Integer) {
+			content.get(row).set(column, aValue.toString());
+		/*} else if (aValue instanceof String) {{
+			content.get(row).set(column, aValue);
+		}*/
+		if (annouance) fireTableCellUpdated(row, column);
 	}
 	
 	private Vector<Vector<String>> content = null;
