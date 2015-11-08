@@ -9,8 +9,8 @@ Java Eclipse - `File` - `New` - `Java Project`<br>
 `Finish`<br>
 How to run
 -----------------------------------
-The main function is in the Main.class under the package "co.jp.worksap.intern.main".<br>
-I provide a simple graphic user interface. I believe that it's easy to understand and use.<br>
+The main function is in the `Main.java` under the package `co.jp.worksap.intern.main`.<br>
+I provide a simple graphical user interface. I believe that it's easy to understand and use.<br>
 The input file of exhibition
 -----------------------------------
 The only useful .csv file under the "files" directory is `STAFF_MST.csv`.<br>
