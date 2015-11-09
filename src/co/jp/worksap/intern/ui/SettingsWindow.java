@@ -28,16 +28,18 @@ public class SettingsWindow extends JFrame {
 	
 	private void initMainPanel() {
 		mainPanel = new JPanel(new BorderLayout());
+		JPanel centerPanel = new JPanel();
 		switch (type) {
 		case ROOM:
+			mainPanel.add(centerPanel,BorderLayout.CENTER);
+			initFilePanel("Room info");
+			centerPanel.add(filePanel);
 			initQueuePanel();
-			mainPanel.add(queuePanel,BorderLayout.CENTER);
+			centerPanel.add(queuePanel,BorderLayout.CENTER);
 			break;
 		case STAFF:
-			JPanel centerPanel = new JPanel();
 			mainPanel.add(centerPanel,BorderLayout.CENTER);
 			initFilePanel("Staff info");
-			//mainPanel.add(filePanel,BorderLayout.CENTER);
 			centerPanel.add(filePanel);
 			initVacationPanel();
 			centerPanel.add(vacationPanel);

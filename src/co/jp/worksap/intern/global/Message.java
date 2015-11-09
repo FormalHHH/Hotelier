@@ -52,9 +52,15 @@ public class Message {
 	public final static int CORE_ROOM = 1;
 	public final static int CORE_STAFF = 2;
 	
-	public final static int STAFF_LOAD = 0;
-	public final static int STAFF_SAVE = 1;
-	public final static int STAFF_ADD = 2;
-	public final static int STAFF_MODIFY = 3;
-	public final static int STAFF_DELETE = 4;
+	public final static int ROOM_LOAD = 0000;
+	public final static int ROOM_SAVE = 0001;
+	public final static int ROOM_ADD = 0002;
+	public final static int ROOM_MODIFY = 0003;
+	public final static int ROOM_DELETE = 0004;
+	
+	public final static int STAFF_LOAD = 1000;
+	public final static int STAFF_SAVE = 1001;
+	public final static int STAFF_ADD = 1002;
+	public final static int STAFF_MODIFY = 1003;
+	public final static int STAFF_DELETE = 1004;
 }

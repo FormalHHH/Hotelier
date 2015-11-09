@@ -75,18 +75,21 @@ public class Table extends AbstractTableModel {
 	
 	public void addRow(String[] row) {
 		content.add(new Vector<String>(Arrays.asList(row)));
+		fireTableRowsInserted(content.size() - 1, content.size() - 1);
 	}
 	
 	public void removeRow(int row) {
 		content.remove(row);
+		fireTableRowsDeleted(row, row);
 	}
 
 	public void removeRows(int row, int count) throws ArrayIndexOutOfBoundsException {
-		if (row + count >= content.size())
+		if (row + count > content.size())
 			throw new ArrayIndexOutOfBoundsException();
 		for (; count > 0; --count) {
 			content.remove(row);
 		}
+		fireTableRowsDeleted(row, row + count - 1);
 	}
 
 	@Override
@@ -111,7 +114,7 @@ public class Table extends AbstractTableModel {
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 0) {
+		if (columnIndex == 0 || columnIndex == 8) {
 			return false;
 		}
 		return true;

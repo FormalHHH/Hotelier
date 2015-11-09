@@ -59,6 +59,32 @@ public class UI extends JFrame implements Runnable {
 		//smPanel.add(staffTable,BorderLayout.CENTER);
 	}
 
+	private void initDeleteButton() {
+		deleteButton = new JButton("-");
+		deleteButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UI.this.t.removeRows(staffTable.getSelectedRow(), staffTable.getSelectedRowCount());
+				staffTable.updateUI();
+			}
+		});
+	}
+
+	private void initAddButton() {
+		addButton = new JButton("+");
+		addButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UI.this.t.addRow(new String[staffTable.getColumnCount()]);
+				//UI.this.t.setValueAt(((Integer)staffTable.getRowCount()).toString(), staffTable.getRowCount() - 1, 0);
+				staffTable.setRowSelectionInterval(staffTable.getRowCount() - 1, staffTable.getRowCount() - 1);
+				staffTable.repaint();
+				staffTable.updateUI();
+				staffScroll.scrollRectToVisible(staffTable.getCellRect(staffTable.getRowCount() - 1, 0, true));
+			}
+		});
+	}
+
 	private void initSaveButton() {
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
@@ -70,9 +96,16 @@ public class UI extends JFrame implements Runnable {
 	}
 
 	private void initStaffPanel() {
-		staffPanel = new JPanel();
+		staffPanel = new JPanel(new BorderLayout());
+		staffPanel.setPreferredSize(new Dimension(700,400));
 		initStaffScroll();
 		staffPanel.add(staffScroll);
+		JPanel southPanel = new JPanel(new FlowLayout());
+		initAddButton();
+		southPanel.add(addButton);
+		initDeleteButton();
+		southPanel.add(deleteButton);
+		smPanel.add(southPanel,BorderLayout.SOUTH);
 	}
 
 	private void initStaffScroll() {
@@ -97,18 +130,40 @@ public class UI extends JFrame implements Runnable {
 		UI.this.t.addTableModelListener(new TableModelListener(){
 			@Override
 			public void tableChanged(TableModelEvent e) {
-				if (e.getType() == TableModelEvent.UPDATE) {
-					for (int i = 0; i < t.getRowCount(); ++i) {
+				switch (e.getType()) {
+				case TableModelEvent.UPDATE:
 					//for (int i = e.getFirstRow(); i <= e.getLastRow(); ++i) {
-						UI.this.t.setValueAt(
+					for (int i = 0; i < UI.this.t.getRowCount(); ++i) {
+						//try {
+							UI.this.t.setValueAt(
 								Math.max(Integer.parseInt(UI.this.t.getValueAt(i, 6)) * (100 - Math.max(Integer.parseInt(UI.this.t.getValueAt(i, 7)) - Settings.permittedVacationPerMonth, 0) * Settings.finePercentForAbsentDays) / 100, 0),
 								i, 8, false);
+						/*} catch (NumberFormatException ex){
+							UI.this.t.setValueAt("0", i, 6, false);
+							UI.this.t.setValueAt("0", i, 7, false);
+							UI.this.t.setValueAt("0", i, 8, false);
+						}*/
+					} 
+					break;
+				case TableModelEvent.DELETE:
+					for (int i = e.getFirstRow(); i < UI.this.t.getRowCount(); ++i) {
+						UI.this.t.setValueAt(((Integer)(i + 1)).toString(), i, 0);
 					}
+					break;
+				case TableModelEvent.INSERT:
+					for (int i = e.getFirstRow(); i < UI.this.t.getRowCount(); ++i) {
+						UI.this.t.setValueAt(((Integer)(i + 1)).toString(), i, 0, false);
+						UI.this.t.setValueAt("0", i, 6, false);
+						UI.this.t.setValueAt("0", i, 7, false);
+						UI.this.t.setValueAt("0", i, 8, false);
+					}
+					break;
 				}
 				UI.this.staffScroll.updateUI();
 			}
 		});
 		staffTable = new JTable(UI.this.t);
+		staffTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 
 	/*private void initSettingsPanel() {
@@ -177,11 +232,17 @@ public class UI extends JFrame implements Runnable {
 	}
 
 	private void initRMPanel() {
-		rmPanel = new JPanel(new FlowLayout());
+		rmPanel = new JPanel(new BorderLayout());
+		JPanel northPanel = new JPanel(new FlowLayout());
 		initSettingsButton();
-		rmPanel.add(settingsButton);
+		northPanel.add(settingsButton);
 		initBackButton();
-		rmPanel.add(backButton);
+		northPanel.add(backButton);
+		initLoadButton();
+		northPanel.add(loadButton);
+		initSaveButton();
+		northPanel.add(saveButton);
+		rmPanel.add(northPanel,BorderLayout.NORTH);
 	}
 	
 	private void initRMButton() {
@@ -214,6 +275,26 @@ public class UI extends JFrame implements Runnable {
 			switch (msg.getDest()) {
 			case Message.UI:
 				switch (msg.getType()) {
+				/*case Message.ROOM_LOAD:
+					if (msg.getInfo()[0].equals("FAIL")) {
+						JOptionPane.showMessageDialog(null, msg.getInfo()[1], msg.getInfo()[0], JOptionPane.ERROR_MESSAGE); 
+					} else {
+						t = new Table(msg.getInfo());
+						
+						try {
+							rmPanel.remove(roomPanel);
+						} catch (NullPointerException e) {
+							System.err.println("MAIN------UI  : first time to show the table");
+						}
+						initRoomPanel();
+						rmPanel.add(roomPanel);
+						this.validate();
+						this.repaint();
+					}
+					break;
+				case Message.ROOM_SAVE:
+					JOptionPane.showMessageDialog(null, msg.getInfo()[1], msg.getInfo()[0], JOptionPane.PLAIN_MESSAGE); 
+					break;*/
 				case Message.STAFF_LOAD:
 					if (msg.getInfo()[0].equals("FAIL")) {
 						JOptionPane.showMessageDialog(null, msg.getInfo()[1], msg.getInfo()[0], JOptionPane.ERROR_MESSAGE); 
@@ -262,6 +343,10 @@ public class UI extends JFrame implements Runnable {
 	
 	private JButton loadButton;
 	private JButton saveButton;
+	
+	private JButton addButton;
+	private JButton deleteButton;
+	
 	private JPanel staffPanel;
 	private JScrollPane staffScroll;
 	private JTable staffTable;
