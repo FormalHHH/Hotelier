@@ -17,3 +17,8 @@ The only useful .csv file under the "files" directory is `STAFF_MST.csv`.<br>
 Usage: Open the project - `Run` - click `Staff Manager` - click `Settings` - choose the `STAFF_MST.csv` file - click `OK` - click `Load`<br>
 Then you can modify values in the form.<br>
 Remember to click `Save` to save your changes. The changed form will be saved to the recent file you open, so make sure you don't need the origin file, or you have a back-up. Actually I provided a back-up.<br>
+What have I already realized
+-----------------------------------
+I have realized the Core and two functions in the Staff Management module.<br>
+>>Load the information of staffs from csv file, then add, delete and modify the information of staffs																				
+>>Autometic financial rewards&punishments calculations based on attendance record for employees and send them to the Accountant assistance																				
