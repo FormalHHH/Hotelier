@@ -6,6 +6,7 @@ import java.util.*;
 import co.jp.worksap.intern.global.*;
 
 public class IO implements Runnable {
+	// Obsoleted
 	public IO() {
 		fileNames = new ArrayList<String>();
 	}

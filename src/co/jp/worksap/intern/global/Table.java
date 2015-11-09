@@ -6,9 +6,8 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 public class Table extends AbstractTableModel {
-	/**
-	 * 
-	 */
+	/** This is for storing the table of .csv file.
+	 *  Also, I need to show it in the JTable. */
 	private static final long serialVersionUID = 4746265560334629599L;
 	public Table(String[] head, String[][] table) {
 		content = new Vector<Vector<String>>();
@@ -136,6 +135,32 @@ public class Table extends AbstractTableModel {
 		}*/
 		if (annouance) fireTableCellUpdated(row, column);
 	}
+	
+	public void initOptions () {
+		gender = new Vector<String>();
+		rank = new Vector<String>();
+		position = new Vector<String>();
+		hotel_id = new Vector<String>();
+		for (Vector<String> line:content) {
+			if (!gender.contains(line.get(2))) {
+				gender.add(line.get(2));
+			}
+			if (!rank.contains(line.get(3))) {
+				rank.add(line.get(3));
+			}
+			if (!position.contains(line.get(4))) {
+				position.add(line.get(4));
+			}
+			if (!hotel_id.contains(line.get(5))) {
+				hotel_id.add(line.get(5));
+			}
+		}
+	}
+	
+	public Vector<String> gender;
+	public Vector<String> rank;
+	public Vector<String> position;
+	public Vector<String> hotel_id;
 	
 	private Vector<Vector<String>> content = null;
 	private String[] head;

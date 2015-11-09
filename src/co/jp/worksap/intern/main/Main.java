@@ -1,12 +1,12 @@
 package co.jp.worksap.intern.main;
 
 import co.jp.worksap.intern.core.Core;
-import co.jp.worksap.intern.io.IO;
+//import co.jp.worksap.intern.io.IO;
 import co.jp.worksap.intern.ui.UI;
 
 public class Main {
 	/** My software is mainly divided to two parts: UI and core
-	 *  Both run in a thread
+	 *  Both run in a main thread and a support thread
 	 *  Use 'Message' to communicate*/
 	public Main() {
 		//io = new IO();

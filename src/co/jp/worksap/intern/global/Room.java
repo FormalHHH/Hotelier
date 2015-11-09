@@ -1,6 +1,7 @@
 package co.jp.worksap.intern.global;
 
 public class Room {
+	/** Info of rooms */
 	public Room(int no) {
 		this.setNo(no);
 		this.setEmpty(true);

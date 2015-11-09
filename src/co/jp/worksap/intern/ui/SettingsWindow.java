@@ -10,6 +10,9 @@ import co.jp.worksap.intern.main.Main;
 
 
 public class SettingsWindow extends JFrame {
+	/** The window of settings */
+	private static final long serialVersionUID = -3560494771915920556L;
+	
 	public SettingsWindow(int type) {
 		this.type = type;
 		this.setTitle("Settings");
@@ -18,6 +21,9 @@ public class SettingsWindow extends JFrame {
 		this.setSize(640, 280);
 		initMainPanel();
 		this.add(mainPanel);
+		loadFile = new FileDialog(SettingsWindow.this,"",FileDialog.LOAD);
+		loadFile.setDirectory(Settings.staffFile[0]);
+		loadFile.setFile(Settings.staffFile[1]);
 	}
 	
 	private void initMainPanel() {
@@ -96,7 +102,6 @@ public class SettingsWindow extends JFrame {
 		browseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) { 
-				loadFile = new FileDialog(SettingsWindow.this,"",FileDialog.LOAD);
 				loadFile.setVisible(true);
 				loadFile.addWindowListener(new WindowAdapter() {
 					@SuppressWarnings("unused")
@@ -208,7 +213,7 @@ public class SettingsWindow extends JFrame {
 	private JPanel queuePanel;
 	
 	private JTextField fileTextField;
-	private JLabel describeLabel;
+	//private JLabel describeLabel;
 	private JButton browseButton;
 	private JPanel filePanel;
 	

@@ -3,6 +3,8 @@ package co.jp.worksap.intern.global;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class MessageQueue {
+	/** A queue for storing Messages.
+	 *  This is the pipe between modules */
 	public MessageQueue() {
 		this.message = new ArrayBlockingQueue<Message>(Settings.blockingQueueLength); 
 	}

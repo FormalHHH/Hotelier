@@ -15,6 +15,8 @@ import java.util.Arrays;
 public class UI extends JFrame implements Runnable {
 	/** UI contains everything visible
 	 *  Settings are separated from the main UI*/
+	private static final long serialVersionUID = 7315256366201115930L;
+
 	public UI() {
 		msgQueue = new MessageQueue();
 		status = 0;
@@ -99,7 +101,7 @@ public class UI extends JFrame implements Runnable {
 					for (int i = 0; i < t.getRowCount(); ++i) {
 					//for (int i = e.getFirstRow(); i <= e.getLastRow(); ++i) {
 						UI.this.t.setValueAt(
-								Integer.parseInt(UI.this.t.getValueAt(i, 6)) * (100 - Math.max(Integer.parseInt(UI.this.t.getValueAt(i, 7)) - Settings.permittedVacationPerMonth, 0) * Settings.finePercentForAbsentDays) / 100,
+								Math.max(Integer.parseInt(UI.this.t.getValueAt(i, 6)) * (100 - Math.max(Integer.parseInt(UI.this.t.getValueAt(i, 7)) - Settings.permittedVacationPerMonth, 0) * Settings.finePercentForAbsentDays) / 100, 0),
 								i, 8, false);
 					}
 				}
@@ -109,11 +111,11 @@ public class UI extends JFrame implements Runnable {
 		staffTable = new JTable(UI.this.t);
 	}
 
-	private void initSettingsPanel() {
+	/*private void initSettingsPanel() {
 		settingsPanel = new JPanel();
 		initSettingsButton();
 		settingsPanel.add(settingsButton);
-	}
+	}*/
 
 	private void initSettingsWindow(int type) {
 		settingsWindow = new SettingsWindow(type);
@@ -197,19 +199,20 @@ public class UI extends JFrame implements Runnable {
 	}
 
 	public void addMessage(Message msg) {
+		/** Add a new Message into my queue. Used by the other module */
 		msgQueue.addMessage(msg);
 	}
 	
 	@Override
 	public void run() {
+		/** The main function for the thread of receiving Messages
+		 *  Outputs are for debugging */
 		while (true) {
 			System.err.println("THREAD----UI  : waiting for message");
 			Message msg = msgQueue.getMessage();
 			System.err.println("THREAD----UI  : get a message");
-			//TODO: handle the message
 			switch (msg.getDest()) {
 			case Message.UI:
-				//TODO: handle the message
 				switch (msg.getType()) {
 				case Message.STAFF_LOAD:
 					if (msg.getInfo()[0].equals("FAIL")) {
@@ -226,7 +229,6 @@ public class UI extends JFrame implements Runnable {
 						smPanel.add(staffPanel);
 						this.validate();
 						this.repaint();
-						//TODO: show the file
 					}
 					break;
 				case Message.STAFF_SAVE:
@@ -249,7 +251,7 @@ public class UI extends JFrame implements Runnable {
 	private JPanel rmPanel;
 	private JPanel smPanel;
 	private JPanel mainPanel;
-	private JPanel settingsPanel;
+	//private JPanel settingsPanel;
 	
 	private JButton rmButton;
 	private JButton smButton;

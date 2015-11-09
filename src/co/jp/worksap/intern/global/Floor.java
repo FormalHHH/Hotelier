@@ -3,6 +3,7 @@ package co.jp.worksap.intern.global;
 import java.util.ArrayList;
 
 public class Floor {
+	/** Info of floors with rooms on this floor */
 	public Floor(int no) {
 		this.setFloor(no);
 		rooms = new ArrayList<Room>();
