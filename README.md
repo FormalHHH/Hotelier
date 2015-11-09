@@ -28,7 +28,7 @@ Then you can modify values in the form.
 
 Remember to click `Save` to save your changes. The changed form will be saved to the recent file you open, so make sure you don't need the origin file, or you have a back-up. Actually I provided a back-up.
 
-What have I already realized
+What I have realized
 -----------------------------------
 I have realized the Core and two functions in the Staff Management module. They are:
 
